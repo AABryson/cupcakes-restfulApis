@@ -27,19 +27,18 @@ def get_data_about_cupcakes():
     #
     cupcakes_dict = [cupcake.to_dict() for cupcake in all_cupcakes]
     #
-    dict_cupcakes = jsonify(cupcakes_dict)
-    return render_template('show_cupcakes.html', cupcakes=dict_cupcakes)
+    return jsonify(cupcakes=cupcakes_dict)
+    # return render_template('show_cupcakes.html', cupcakes=dict_cupcakes)
 
 
 @app.route('/api/cupcakes/<int:id>')
 def get_info_about_cupcake(id):
     cupcake = Cupcake.query.get(id)
-    print(cupcake)
     #
     cupcake = cupcake.to_dict()
     #
-    cupcake = jsonify(cupcake)
-    return render_template('show_cupcake.html', cupcake=cupcake)
+    return jsonify(cupcake=cupcake)
+    # return render_template('show_cupcake.html', cupcake=cupcake)
 
 
 @app.route('/api/cupcakes', methods=['POST'])
@@ -50,8 +49,7 @@ def add_cupcake():
         flavor = req['flavor'],
         size = req['size'],
         rating = req['rating'],
-        image = req['image']
-        )
+        image = req['image'])
     db.session.add(cupcake)
     db.session.commit()
     return jsonify(cupcake=cupcake.to_dict())

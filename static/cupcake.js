@@ -1,11 +1,10 @@
-
-const urlBase = "http://localhost:5000/api"
+const urlBase = "http://127.0.0.1/:5000/api"
 
 function cupcakeHTML(cupcake) {
-    return ` <li>ID: ${cupcake.id}</li>
+    return `<div data-cupcake-id=${cupcake.id}>
     <li>Flavor: ${cupcake.flavor}, Size: ${cupcake.size}, Rating: ${cupcake.rating}</li>
-    <img src="${cupcake.img}"> `;
-
+    <img src="${cupcake.img}">
+    </div>`;
 }
 
 async function showInitialCupcakes() {
@@ -31,10 +30,21 @@ $('button').on('click', async function(event){
         image
       });
     
-      let newCupcake = cupcakeHTML(newCupcakeResponse.data.cupcake);
-      $("ul").append(newCupcake);
-    //   $("form").trigger("reset");
+    let newCupcake = cupcakeHTML(newCupcakeResponse.data.cupcake);
+    $("ul").append(newCupcake);
+    $("form").trigger("reset");
     })
 
-    
 
+$("#cupcakes-list").on("click", ".delete-button", async function (event) {
+    event.preventDefault();
+    let $cupcake = $(event.target).closest("div");
+    let cupcakeId = $cupcake.attr("data-cupcake-id");
+    
+    await axios.delete(`${BASE_URL}/cupcakes/${cupcakeId}`);
+    $cupcake.remove();
+    });
+
+//?????????????????
+// showInitialCupcakes()
+$(showInitialCupcakes);
